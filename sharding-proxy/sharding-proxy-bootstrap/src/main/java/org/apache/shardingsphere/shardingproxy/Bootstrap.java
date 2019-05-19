@@ -17,6 +17,7 @@
 
 package org.apache.shardingsphere.shardingproxy;
 
+import com.songshu.snt.sharding.sphere.algorithm.DatabaseShardingAlgorithm;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.shardingsphere.api.config.RuleConfiguration;
@@ -68,6 +69,7 @@ public final class Bootstrap {
      */
     public static void main(final String[] args) throws IOException {
         ShardingConfiguration shardingConfig = new ShardingConfigurationLoader().load();
+        DatabaseShardingAlgorithm.CONFIG = shardingConfig.getRuleConfigurationMap();
         int port = getPort(args);
         if (null == shardingConfig.getServerConfiguration().getOrchestration()) {
             startWithoutRegistryCenter(shardingConfig.getRuleConfigurationMap(), shardingConfig.getServerConfiguration().getAuthentication(), shardingConfig.getServerConfiguration().getProps(), port);

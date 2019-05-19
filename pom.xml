@@ -43,6 +43,7 @@
         <module>sharding-sql-test</module>
         
         <module>sharding-distribution</module>
+        <module>sharding-algorithm</module>
     </modules>
     
     <properties>
