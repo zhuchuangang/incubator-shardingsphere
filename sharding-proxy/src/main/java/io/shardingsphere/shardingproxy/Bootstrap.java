@@ -24,6 +24,7 @@ import io.shardingsphere.core.rule.Authentication;
 import io.shardingsphere.core.rule.DataSourceParameter;
 import io.shardingsphere.opentracing.ShardingTracer;
 import io.shardingsphere.orchestration.internal.registry.ShardingOrchestrationFacade;
+import io.shardingsphere.shardingproxy.algorithm.DatabaseShardingAlgorithm;
 import io.shardingsphere.shardingproxy.config.ShardingConfiguration;
 import io.shardingsphere.shardingproxy.config.ShardingConfigurationLoader;
 import io.shardingsphere.shardingproxy.config.yaml.YamlProxyRuleConfiguration;
@@ -63,6 +64,7 @@ public final class Bootstrap {
      */
     public static void main(final String[] args) throws InterruptedException, IOException {
         ShardingConfiguration shardingConfig = new ShardingConfigurationLoader().load();
+        DatabaseShardingAlgorithm.CONFIG = shardingConfig.getRuleConfigurationMap();
         int port = getPort(args);
         new ProxyListenerRegister().register();
         if (null == shardingConfig.getServerConfiguration().getOrchestration()) {
