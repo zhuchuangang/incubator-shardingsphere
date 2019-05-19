@@ -10,13 +10,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 分片字段值取hashcode % 分片数 获得 分片数据库
  *
  * @author 鼠笑天
  */
-public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<String> {
+@Slf4j public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<String> {
 
     /**
      * 分表对于的表个数
@@ -49,7 +50,14 @@ public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<Strin
         }
         Integer databaseCount = availableTargetNames.size();
         Integer tableCountPreDatabase = tableCount / databaseCount;
-        Integer index = Math.abs((shardingValue.getValue().hashCode() / tableCountPreDatabase) % databaseCount);
+
+        String sv = shardingValue.getValue();
+        if (shardingValue.getValue().startsWith("'") && shardingValue.getValue().endsWith("'")) {
+            sv = sv.substring(1, sv.length() - 1);
+        }
+
+        Integer index = Math.abs((sv.hashCode() / tableCountPreDatabase) % databaseCount);
+
         return (String)availableTargetNames.toArray()[Math.abs(index)];
     }
 }
